@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 export default function HeroSection() {
     const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const scrollProgressRef = useRef(0);
+    const [showText, setShowText] = useState(false);
     const rafIdRef = useRef<number | null>(null);
 
     useEffect(() => {
@@ -20,6 +21,13 @@ export default function HeroSection() {
             const scrolled = -rect.top;
             const progress = Math.max(0, Math.min(1, scrolled / scrollableHeight));
             scrollProgressRef.current = progress;
+
+            // Update text visibility state
+            if (progress >= 0.8) {
+                setShowText(true);
+            } else {
+                setShowText(false);
+            }
         };
 
         // Render loop - updates video time based on progress
@@ -69,14 +77,19 @@ export default function HeroSection() {
           "
                 />
 
-                {/* Overlay content - dark brown text for premium feel */}
-                <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 md:pb-20 lg:pb-24 pointer-events-none">
-                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#3E2723] text-center tracking-tight drop-shadow-sm">
+                {/* Overlay content - centered with pink border and white text */}
+                <div
+                    className={`
+                        absolute inset-0 mx-auto
+                        flex flex-col items-center justify-center
+                        max-w-[700px] px-4
+                        transition-all duration-700 ease-out
+                        ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
+                    `}
+                >
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white text-center tracking-tight px-8 py-5 bg-[#edc5c4] rounded-lg">
                         두바이 쫀득 쿠키
                     </h1>
-                    <p className="mt-3 text-sm md:text-base text-[#5D4037] text-center max-w-md px-4">
-                        스크롤하여 쫀득한 식감을 느껴보세요
-                    </p>
 
                     {/* Scroll indicator */}
                     <div className="mt-8 animate-bounce">
