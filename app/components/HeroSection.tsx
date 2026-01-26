@@ -5,54 +5,58 @@ import { useRef, useEffect, useState } from "react";
 export default function HeroSection() {
     const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
-    const scrollProgressRef = useRef(0);
     const [showText, setShowText] = useState(false);
-    const rafIdRef = useRef<number | null>(null);
 
     useEffect(() => {
-        const container = containerRef.current;
         const video = videoRef.current;
-        if (!container || !video) return;
+        const container = containerRef.current;
+        if (!video || !container) return;
 
-        // Scroll handler - only updates progress variable
-        const handleScroll = () => {
-            const rect = container.getBoundingClientRect();
-            const scrollableHeight = container.offsetHeight - window.innerHeight;
-            const scrolled = -rect.top;
-            const progress = Math.max(0, Math.min(1, scrolled / scrollableHeight));
-            scrollProgressRef.current = progress;
+        let targetTime = 0;
+        let animationId: number | null = null;
+
+        const updateTargetTime = () => {
+            const maxScroll = container.offsetHeight - window.innerHeight;
+            const currentScroll = window.scrollY;
+            let scrollProgress = currentScroll / maxScroll;
+
+            if (scrollProgress < 0) scrollProgress = 0;
+            if (scrollProgress > 1) scrollProgress = 1;
+
+            if (video.duration) {
+                targetTime = scrollProgress * video.duration;
+            }
 
             // Update text visibility state
-            if (progress >= 0.8) {
+            if (scrollProgress >= 0.8) {
                 setShowText(true);
             } else {
                 setShowText(false);
             }
         };
 
-        // Render loop - updates video time based on progress
+        // 부드러운 보간 방식으로 영상 시간 업데이트 (모바일 호환성 향상)
         const renderLoop = () => {
-            const video = videoRef.current;
-            if (video && video.duration && !video.seeking) {
-                const targetTime = scrollProgressRef.current * video.duration;
-                // Only update if difference is significant
-                if (Math.abs(video.currentTime - targetTime) > 0.05) {
-                    video.currentTime = targetTime;
+            if (video.readyState >= 2 && !video.seeking) {
+                const diff = targetTime - video.currentTime;
+                if (Math.abs(diff) > 0.01) {
+                    video.currentTime += diff * 0.1;
                 }
             }
-            rafIdRef.current = requestAnimationFrame(renderLoop);
+            animationId = requestAnimationFrame(renderLoop);
         };
 
-        // Initialize
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        handleScroll(); // Initial calculation
-        rafIdRef.current = requestAnimationFrame(renderLoop);
+        const handleScroll = () => {
+            updateTargetTime();
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        animationId = requestAnimationFrame(renderLoop);
+        updateTargetTime();
 
         return () => {
-            window.removeEventListener("scroll", handleScroll);
-            if (rafIdRef.current) {
-                cancelAnimationFrame(rafIdRef.current);
-            }
+            window.removeEventListener('scroll', handleScroll);
+            if (animationId) cancelAnimationFrame(animationId);
         };
     }, []);
 
