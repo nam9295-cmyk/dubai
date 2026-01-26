@@ -44,7 +44,7 @@ export default function IngredientsSection() {
         {
             icon: <GiPeanut className={iconClass} />,
             title: "100% Pistachio",
-            description: "첨가물 없이 원물 그대로 갈아 만든, 꾸덕하고 고소한 피스타치오 페이스트.",
+            description: "피스타치오 원물 그대로 갈아 만든, 꾸덕하고 고소한 피스타치오 페이스트.",
         },
         {
             // 4번째 카드는 이미지를 사용
@@ -64,10 +64,11 @@ export default function IngredientsSection() {
 
                 {/* Glassmorphism Cards - Slider on Mobile, Grid on Desktop */}
                 <div
-                    className="flex overflow-x-auto snap-x snap-mandatory lg:grid lg:grid-cols-4 gap-6 pb-8 lg:pb-0 -mx-4 px-4 lg:mx-0 lg:px-0"
+                    className="flex overflow-x-auto snap-x snap-proximity lg:grid lg:grid-cols-4 gap-6 pb-8 lg:pb-0 -mx-4 px-4 lg:mx-0 lg:px-0 touch-pan-y"
                     style={{
                         scrollbarWidth: 'none',
-                        msOverflowStyle: 'none'
+                        msOverflowStyle: 'none',
+                        WebkitOverflowScrolling: 'touch' // iOS smooth scrolling
                     }}
                 >
                     <style jsx>{`

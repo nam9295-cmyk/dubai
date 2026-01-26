@@ -31,7 +31,7 @@ export default function StorySection() {
                 {/* Block A: The Motivation */}
                 <div className="grid md:grid-cols-12 gap-y-12 md:gap-x-16 lg:gap-x-24 items-center text-left">
                     {/* Visual - Left (5 columns approx 41%) */}
-                    <div className={`col-span-12 md:col-span-5 relative aspect-[4/5] md:aspect-square order-1 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+                    <div className={`col-span-12 md:col-span-5 relative aspect-[4/5] md:aspect-square order-1 transition-all duration-700 ease-out will-change-transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                         <div className="w-full h-full rounded-[2rem] overflow-hidden shadow-2xl relative rotate-1 hover:rotate-0 transition-transform duration-700">
                             <Image
                                 src="/story-family.webp"
@@ -46,7 +46,7 @@ export default function StorySection() {
                     </div>
 
                     {/* Text - Right (7 columns) */}
-                    <div className={`col-span-12 md:col-span-7 md:pl-8 order-2 space-y-8 transition-all duration-1000 delay-200 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+                    <div className={`col-span-12 md:col-span-7 md:pl-8 order-2 space-y-8 transition-all duration-700 delay-200 ease-out will-change-transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                         <div>
                             <span className="text-gray-400 font-medium tracking-widest text-xs uppercase block mb-3">The Motivation</span>
                             <h3 className="text-4xl md:text-5xl font-[family-name:var(--font-song-myung)] font-serif text-[#3e2723] leading-tight tracking-tight mb-6">
@@ -71,7 +71,7 @@ export default function StorySection() {
                 {/* Block B: The Quality */}
                 <div className="grid md:grid-cols-12 gap-y-12 md:gap-x-16 lg:gap-x-24 items-center text-left">
                     {/* Text - Left (7 columns) */}
-                    <div className={`col-span-12 md:col-span-7 md:pr-8 order-2 md:order-1 space-y-8 transition-all duration-1000 delay-300 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+                    <div className={`col-span-12 md:col-span-7 md:pr-8 order-2 md:order-1 space-y-8 transition-all duration-700 delay-300 ease-out will-change-transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                         <div>
                             <span className="text-gray-400 font-medium tracking-widest text-xs uppercase block mb-3">The Quality</span>
                             <h3 className="text-4xl md:text-5xl font-[family-name:var(--font-song-myung)] font-serif text-[#3e2723] leading-tight tracking-tight mb-6">
@@ -94,7 +94,7 @@ export default function StorySection() {
                     </div>
 
                     {/* Visual - Right (5 columns) */}
-                    <div className={`col-span-12 md:col-span-5 relative aspect-[4/5] md:aspect-square order-1 md:order-2 transition-all duration-1000 delay-100 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+                    <div className={`col-span-12 md:col-span-5 relative aspect-[4/5] md:aspect-square order-1 md:order-2 transition-all duration-700 delay-100 ease-out will-change-transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                         <div className="w-full h-full rounded-[2rem] overflow-hidden shadow-2xl relative -rotate-1 hover:rotate-0 transition-transform duration-700">
                             <Image
                                 src="/story-ingredients.webp"
