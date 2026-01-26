@@ -7,10 +7,12 @@ export default function HeroSection() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const scrollProgressRef = useRef(0);
     const [showText, setShowText] = useState(false);
+    const rafIdRef = useRef<number | null>(null);
 
     useEffect(() => {
         const container = containerRef.current;
-        if (!container) return;
+        const video = videoRef.current;
+        if (!container || !video) return;
 
         // Scroll handler - only updates progress variable
         const handleScroll = () => {
@@ -28,38 +30,29 @@ export default function HeroSection() {
             }
         };
 
+        // Render loop - updates video time based on progress
+        const renderLoop = () => {
+            const video = videoRef.current;
+            if (video && video.duration && !video.seeking) {
+                const targetTime = scrollProgressRef.current * video.duration;
+                // Only update if difference is significant
+                if (Math.abs(video.currentTime - targetTime) > 0.05) {
+                    video.currentTime = targetTime;
+                }
+            }
+            rafIdRef.current = requestAnimationFrame(renderLoop);
+        };
+
         // Initialize
         window.addEventListener("scroll", handleScroll, { passive: true });
         handleScroll(); // Initial calculation
+        rafIdRef.current = requestAnimationFrame(renderLoop);
 
         return () => {
             window.removeEventListener("scroll", handleScroll);
-        };
-    }, []);
-
-    // iOS Safari needs programmatic play() call
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        const attemptPlay = () => {
-            video.play().catch(() => {
-                // Autoplay blocked, will show poster or first frame
-            });
-        };
-
-        // Try to play immediately
-        attemptPlay();
-
-        // Also try on user interaction (touch)
-        const handleInteraction = () => {
-            attemptPlay();
-            document.removeEventListener('touchstart', handleInteraction);
-        };
-        document.addEventListener('touchstart', handleInteraction, { once: true });
-
-        return () => {
-            document.removeEventListener('touchstart', handleInteraction);
+            if (rafIdRef.current) {
+                cancelAnimationFrame(rafIdRef.current);
+            }
         };
     }, []);
 
@@ -74,10 +67,7 @@ export default function HeroSection() {
                     ref={videoRef}
                     src="/hero-cookie.mp4"
                     muted
-                    autoPlay
-                    loop
                     playsInline
-                    webkit-playsinline="true"
                     preload="auto"
                     className="
             w-full h-auto max-h-[70vh]
