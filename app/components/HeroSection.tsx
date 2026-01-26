@@ -69,7 +69,7 @@ export default function HeroSection() {
             <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden px-4 py-8 md:px-12 md:py-16 lg:px-24 lg:py-20">
                 <video
                     ref={videoRef}
-                    src="/hero-cookie.mp4"
+                    src="https://github.com/nam9295-cmyk/asset/raw/refs/heads/main/dubai_cookie.mp4"
                     muted
                     playsInline
                     preload="auto"
