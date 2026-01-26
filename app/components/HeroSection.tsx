@@ -2,11 +2,40 @@
 
 import { useRef, useEffect, useState } from "react";
 
+// 비디오 소스 URL 정의
+const DESKTOP_VIDEO_URL = "https://github.com/nam9295-cmyk/asset/raw/refs/heads/main/hero-cookie.mp4";
+const MOBILE_VIDEO_URL = "https://github.com/nam9295-cmyk/asset/raw/refs/heads/main/hero-cookie-mobile.mp4";
+
 export default function HeroSection() {
     const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const [showText, setShowText] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
+    // 화면 크기 감지
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 1024);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // 비디오 소스 변경 시 로드
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const videoUrl = isMobile ? MOBILE_VIDEO_URL : DESKTOP_VIDEO_URL;
+        if (video.src !== videoUrl) {
+            video.src = videoUrl;
+            video.load();
+        }
+    }, [isMobile]);
+
+    // 스크롤 기반 영상 제어
     useEffect(() => {
         const video = videoRef.current;
         const container = containerRef.current;
@@ -58,7 +87,7 @@ export default function HeroSection() {
             window.removeEventListener('scroll', handleScroll);
             if (animationId) cancelAnimationFrame(animationId);
         };
-    }, []);
+    }, [isMobile]);
 
     return (
         <section
@@ -69,7 +98,6 @@ export default function HeroSection() {
             <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden px-4 py-8 md:px-12 md:py-16 lg:px-24 lg:py-20">
                 <video
                     ref={videoRef}
-                    src="https://github.com/nam9295-cmyk/asset/raw/refs/heads/main/dubai_cookie.mp4"
                     muted
                     playsInline
                     preload="auto"
