@@ -94,17 +94,16 @@ export default function HeroSection() {
             ref={containerRef}
             className="relative h-[300vh]"
         >
-            {/* Sticky video container - with generous padding for breathing room */}
-            <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden px-4 py-8 md:px-12 md:py-16 lg:px-24 lg:py-20">
+            {/* Sticky video container - no padding on mobile for full bleed */}
+            <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden md:px-12 md:py-16 lg:px-24 lg:py-20">
                 <video
                     ref={videoRef}
                     muted
                     playsInline
                     preload="auto"
                     className="
-            w-full h-auto max-h-[70vh]
-            object-contain
-            md:max-h-[75vh]
+            w-full h-full object-cover
+            md:h-auto md:max-h-[75vh] md:object-contain
             lg:max-h-[80vh]
           "
                 />
