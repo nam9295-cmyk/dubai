@@ -28,15 +28,38 @@ export default function HeroSection() {
             }
         };
 
-
-
         // Initialize
         window.addEventListener("scroll", handleScroll, { passive: true });
         handleScroll(); // Initial calculation
 
-
         return () => {
             window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    // iOS Safari needs programmatic play() call
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const attemptPlay = () => {
+            video.play().catch(() => {
+                // Autoplay blocked, will show poster or first frame
+            });
+        };
+
+        // Try to play immediately
+        attemptPlay();
+
+        // Also try on user interaction (touch)
+        const handleInteraction = () => {
+            attemptPlay();
+            document.removeEventListener('touchstart', handleInteraction);
+        };
+        document.addEventListener('touchstart', handleInteraction, { once: true });
+
+        return () => {
+            document.removeEventListener('touchstart', handleInteraction);
         };
     }, []);
 
@@ -51,9 +74,10 @@ export default function HeroSection() {
                     ref={videoRef}
                     src="/hero-cookie.mp4"
                     muted
-                    autoPlay    // 👈 추가! (자동으로 재생해!)
-                    loop        // 👈 추가! (끝나면 다시 반복해!)
+                    autoPlay
+                    loop
                     playsInline
+                    webkit-playsinline="true"
                     preload="auto"
                     className="
             w-full h-auto max-h-[70vh]
