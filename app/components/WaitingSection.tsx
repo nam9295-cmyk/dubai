@@ -17,16 +17,16 @@ interface Reply {
 // 🎨 Graffiti Presets: Pre-defined chaotic styles
 // Randomness is deterministic based on index to avoid hydration mismatch
 const STYLES = [
-    { rotate: "rotate-[-2deg]", bg: "bg-yellow-50", text: "text-gray-800", translate: "translate-y-2", z: "z-0" },
-    { rotate: "rotate-[3deg]", bg: "bg-blue-50", text: "text-indigo-900", translate: "-translate-x-1", z: "z-10" },
-    { rotate: "rotate-[1deg]", bg: "bg-red-50", text: "text-red-900", translate: "translate-y-[-5px]", z: "z-0" },
-    { rotate: "rotate-[-3deg]", bg: "bg-green-50", text: "text-green-900", translate: "translate-x-2", z: "z-0" },
-    { rotate: "rotate-[4deg]", bg: "bg-purple-50", text: "text-purple-900", translate: "translate-y-1", z: "z-20" },
-    { rotate: "rotate-[-1deg]", bg: "bg-orange-50", text: "text-orange-900", translate: "-translate-y-2", z: "z-0" },
-    { rotate: "rotate-[2deg]", bg: "bg-pink-50", text: "text-pink-900", translate: "translate-x-1", z: "z-10" },
-    { rotate: "rotate-[-4deg]", bg: "bg-white", text: "text-gray-900", translate: "translate-y-3", z: "z-0" },
-    { rotate: "rotate-[5deg]", bg: "bg-gray-100", text: "text-gray-800", translate: "translate-x-[-5px]", z: "z-30" },
-    { rotate: "rotate-[-5deg]", bg: "bg-amber-50", text: "text-amber-900", translate: "translate-y-[-2px]", z: "z-0" },
+    { rotate: "rotate-[-2deg]", rotateVal: -2, bg: "bg-yellow-50", text: "text-gray-800", translate: "translate-y-2", z: "z-0" },
+    { rotate: "rotate-[3deg]", rotateVal: 3, bg: "bg-blue-50", text: "text-indigo-900", translate: "-translate-x-1", z: "z-10" },
+    { rotate: "rotate-[1deg]", rotateVal: 1, bg: "bg-red-50", text: "text-red-900", translate: "translate-y-[-5px]", z: "z-0" },
+    { rotate: "rotate-[-3deg]", rotateVal: -3, bg: "bg-green-50", text: "text-green-900", translate: "translate-x-2", z: "z-0" },
+    { rotate: "rotate-[4deg]", rotateVal: 4, bg: "bg-purple-50", text: "text-purple-900", translate: "translate-y-1", z: "z-20" },
+    { rotate: "rotate-[-1deg]", rotateVal: -1, bg: "bg-orange-50", text: "text-orange-900", translate: "-translate-y-2", z: "z-0" },
+    { rotate: "rotate-[2deg]", rotateVal: 2, bg: "bg-pink-50", text: "text-pink-900", translate: "translate-x-1", z: "z-10" },
+    { rotate: "rotate-[-4deg]", rotateVal: -4, bg: "bg-white", text: "text-gray-900", translate: "translate-y-3", z: "z-0" },
+    { rotate: "rotate-[5deg]", rotateVal: 5, bg: "bg-gray-100", text: "text-gray-800", translate: "translate-x-[-5px]", z: "z-30" },
+    { rotate: "rotate-[-5deg]", rotateVal: -5, bg: "bg-amber-50", text: "text-amber-900", translate: "translate-y-[-2px]", z: "z-0" },
 ];
 
 export default function WaitingSection() {
@@ -39,7 +39,7 @@ export default function WaitingSection() {
 
     // Real-time listener
     useEffect(() => {
-        const q = query(collection(db, "dubai_reply"), orderBy("createdAt", "desc"));
+        const q = query(collection(db, "dubai-reply"), orderBy("createdAt", "desc"));
 
         const unsubscribe = onSnapshot(q, (snapshot: QuerySnapshot<DocumentData>) => {
             const msgs = snapshot.docs.map(doc => ({
@@ -90,7 +90,7 @@ export default function WaitingSection() {
 
         setLoading(true);
         try {
-            await addDoc(collection(db, "dubai_reply"), {
+            await addDoc(collection(db, "dubai-reply"), {
                 name,
                 phoneLast4,
                 message,
@@ -206,7 +206,7 @@ export default function WaitingSection() {
                                     <motion.div
                                         key={reply.id}
                                         initial={{ scale: 0, rotate: 10, y: 50, opacity: 0 }}
-                                        animate={{ scale: 1, rotate: style.rotate.replace("rotate-", "").replace("[", "").replace("]", "") + "deg", y: 0, opacity: 1 }}
+                                        animate={{ scale: 1, rotate: style.rotateVal, y: 0, opacity: 1 }}
                                         transition={{
                                             type: "spring",
                                             stiffness: 300,
