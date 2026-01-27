@@ -26,7 +26,7 @@ export default function Header() {
         },
         {
             title: "Korea Official",
-            label: "한국 공식홈",
+            label: "대구 매장 홈",
             url: "https://kr.verygood-chocolate.com",
             icon: <LuMonitor className="w-4 h-4" />,
             type: "ghost",
