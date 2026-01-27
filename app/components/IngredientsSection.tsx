@@ -64,7 +64,7 @@ export default function IngredientsSection() {
 
                 {/* Glassmorphism Cards - Slider on Mobile, Grid on Desktop */}
                 <div
-                    className="flex overflow-x-auto snap-x snap-proximity lg:grid lg:grid-cols-4 gap-6 pb-8 lg:pb-0 -mx-4 px-4 lg:mx-0 lg:px-0 touch-pan-y"
+                    className="flex overflow-x-auto snap-x snap-proximity lg:grid lg:grid-cols-4 gap-6 pb-8 lg:pb-0 -mx-4 px-4 lg:mx-0 lg:px-0 touch-pan-x"
                     style={{
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
