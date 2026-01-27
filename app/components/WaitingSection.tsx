@@ -60,6 +60,11 @@ export default function WaitingSection() {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        
+        // Debugging Start
+        alert("저장 시도 중... 🚀");
+        console.log("API Key Check:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
+
         setError(null);
 
         // Debug: Check if config is loaded
@@ -97,14 +102,15 @@ export default function WaitingSection() {
                 createdAt: serverTimestamp()
             });
 
+            alert("저장 성공! 🎉");
+
             localStorage.setItem("last_submitted_time", Date.now().toString());
             setName("");
             setPhoneLast4("");
             setMessage("");
-            // No alert needed for "Graffiti" concept - visual feedback is better (seeing it appear)
         } catch (err: any) {
             console.error("Write error:", err);
-            alert(`저장 실패: ${err.message}`);
+            alert("에러 발생! 🚨: " + err.message);
             setError("에러가 발생했습니다.");
         } finally {
             setLoading(false);
