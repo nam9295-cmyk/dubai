@@ -33,6 +33,7 @@ const gamjaFlower = Gamja_Flower({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dubai.verygood-chocolate.com"),
   title: "베리굿초콜릿 - 두바이 말고 '두쫀쿠'!",
   description: "줄 서서 먹는 그 맛, 드디어 온라인 상륙! 지금 댓글 남기면 '토니쿠키'를 드려요. 🍪",
   icons: {
