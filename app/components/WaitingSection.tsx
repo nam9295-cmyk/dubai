@@ -40,12 +40,19 @@ export default function WaitingSection() {
     // Real-time listener
     useEffect(() => {
         const q = query(collection(db, "dubai_reply"), orderBy("createdAt", "desc"));
+
         const unsubscribe = onSnapshot(q, (snapshot: QuerySnapshot<DocumentData>) => {
             const msgs = snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             })) as Reply[];
             setReplies(msgs);
+        }, (error) => {
+            console.error("Snapshot error:", error);
+            // Common error: Missing permissions
+            if (error.code === 'permission-denied') {
+                alert("Firestore 권한 오류입니다. Firebase Console에서 Rules를 확인해주세요.");
+            }
         });
 
         return () => unsubscribe();
@@ -54,6 +61,12 @@ export default function WaitingSection() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError(null);
+
+        // Debug: Check if config is loaded
+        if (!db) {
+            alert("Firebase DB가 초기화되지 않았습니다. 페이지를 새로고침 해주세요.");
+            return;
+        }
 
         // Validation
         if (!name.trim() || !message.trim()) {
@@ -77,14 +90,12 @@ export default function WaitingSection() {
 
         setLoading(true);
         try {
-            console.log("Attempting to write to Firestore...");
             await addDoc(collection(db, "dubai_reply"), {
                 name,
                 phoneLast4,
                 message,
                 createdAt: serverTimestamp()
             });
-            console.log("Document written successfully");
 
             localStorage.setItem("last_submitted_time", Date.now().toString());
             setName("");
@@ -92,9 +103,8 @@ export default function WaitingSection() {
             setMessage("");
             // No alert needed for "Graffiti" concept - visual feedback is better (seeing it appear)
         } catch (err: any) {
-            console.error("Error adding document: ", err);
-            // Detailed error for debugging
-            alert(`저장 중 에러가 발생했습니다:\n${err.message || err}`);
+            console.error("Write error:", err);
+            alert(`저장 실패: ${err.message}`);
             setError("에러가 발생했습니다.");
         } finally {
             setLoading(false);
@@ -124,6 +134,8 @@ export default function WaitingSection() {
                         <div className="w-full md:w-32 flex-shrink-0">
                             <input
                                 type="text"
+                                name="nickname"
+                                id="input-nickname"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="닉네임"
@@ -136,6 +148,8 @@ export default function WaitingSection() {
                         <div className="w-full md:w-24 flex-shrink-0">
                             <input
                                 type="text"
+                                name="phone"
+                                id="input-phone"
                                 value={phoneLast4}
                                 onChange={(e) => {
                                     const val = e.target.value.replace(/[^0-9]/g, "");
@@ -150,6 +164,8 @@ export default function WaitingSection() {
                         <div className="flex-grow">
                             <input
                                 type="text"
+                                name="message"
+                                id="input-message"
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 placeholder="자유롭게 낙서를 남겨보세요! (최대 50자)"
