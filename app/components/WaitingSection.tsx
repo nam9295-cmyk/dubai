@@ -77,20 +77,24 @@ export default function WaitingSection() {
 
         setLoading(true);
         try {
+            console.log("Attempting to write to Firestore...");
             await addDoc(collection(db, "dubai_reply"), {
                 name,
                 phoneLast4,
                 message,
                 createdAt: serverTimestamp()
             });
+            console.log("Document written successfully");
 
             localStorage.setItem("last_submitted_time", Date.now().toString());
             setName("");
             setPhoneLast4("");
             setMessage("");
             // No alert needed for "Graffiti" concept - visual feedback is better (seeing it appear)
-        } catch (err) {
+        } catch (err: any) {
             console.error("Error adding document: ", err);
+            // Detailed error for debugging
+            alert(`저장 중 에러가 발생했습니다:\n${err.message || err}`);
             setError("에러가 발생했습니다.");
         } finally {
             setLoading(false);
