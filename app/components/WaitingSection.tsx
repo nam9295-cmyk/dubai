@@ -4,6 +4,7 @@ import { useState, useEffect, FormEvent } from "react";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, Timestamp, QuerySnapshot, DocumentData } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 
@@ -36,6 +37,7 @@ export default function WaitingSection() {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     // Real-time listener
     useEffect(() => {
@@ -51,7 +53,7 @@ export default function WaitingSection() {
             console.error("Snapshot error:", error);
             // Common error: Missing permissions
             if (error.code === 'permission-denied') {
-                alert("Firestore 권한 오류입니다. Firebase Console에서 Rules를 확인해주세요.");
+                console.error("Firestore 권한 오류: Firebase Console에서 Rules를 확인해주세요.");
             }
         });
 
@@ -62,14 +64,15 @@ export default function WaitingSection() {
         e.preventDefault();
 
         // Debugging Start
-        alert("저장 시도 중.... 🚀");
-        console.log("API Key Check:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
+        // Removed validation alerts/logs
 
         setError(null);
+        setSuccessMessage(null);
 
         // Debug: Check if config is loaded
         if (!db) {
-            alert("Firebase DB가 초기화되지 않았습니다. 페이지를 새로고침 해주세요.");
+            console.error("Firebase DB not initialized");
+            setError("잠시 후 다시 시도해주세요.");
             return;
         }
 
@@ -88,7 +91,7 @@ export default function WaitingSection() {
         if (lastSubmitted) {
             const timeDiff = Date.now() - parseInt(lastSubmitted, 10);
             if (timeDiff < 60000) {
-                alert("도배 방지를 위해 1분 뒤에 다시 작성할 수 있습니다.");
+                setError("잠시 후 다시 시도해주세요.");
                 return;
             }
         }
@@ -102,7 +105,10 @@ export default function WaitingSection() {
                 createdAt: serverTimestamp()
             });
 
-            alert("저장 성공! 🎉");
+            setSuccessMessage("소중한 마음이 전달되었어요! �");
+
+            // Clear success message after 3 seconds
+            setTimeout(() => setSuccessMessage(null), 3000);
 
             localStorage.setItem("last_submitted_time", Date.now().toString());
             setName("");
@@ -110,8 +116,7 @@ export default function WaitingSection() {
             setMessage("");
         } catch (err: any) {
             console.error("Write error:", err);
-            alert("에러 발생! 🚨: " + err.message);
-            setError("에러가 발생했습니다.");
+            setError("잠시 후 다시 시도해주세요.");
         } finally {
             setLoading(false);
         }
@@ -122,18 +127,35 @@ export default function WaitingSection() {
             <div className="max-w-7xl mx-auto px-4">
 
                 {/* 1. Header & Banner */}
-                <div className="text-center mb-10 relative">
-                    <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gray-300 -z-10"></div>
-                    <span className="bg-[#F5F5F3] px-6 text-4xl md:text-6xl font-black uppercase italic tracking-tighter transform -rotate-2 inline-block text-black">
+                {/* 1. Header & Banner */}
+                {/* 1. Header & Banner */}
+                <div className="text-center mb-12 md:mb-28 relative flex flex-col items-center">
+                    <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gray-300 -z-10 hidden md:block"></div>
+                    <span className="bg-[#F5F5F3] px-6 text-4xl md:text-6xl font-black uppercase italic tracking-tighter transform -rotate-2 inline-block text-black z-10 relative">
                         Graffiti Wall
                     </span>
-                    <p className="mt-4 text-gray-500 font-bold uppercase tracking-widest text-sm">
-                        Leave your mark. Win the Hogeol Keyring. 🐯
-                    </p>
+
+                    {/* Polaroid Image */}
+                    <div className="relative md:absolute md:right-[17%] md:-top-16 transform -rotate-[-10deg] transition-transform hover:rotate-0 hover:scale-105 z-[60] mt-8 md:mt-0">
+                        <div className="p-3 bg-white shadow-xl rotate-3">
+                            <div className="relative w-[140px] h-[140px] md:w-[180px] md:h-[180px]">
+                                <Image
+                                    src="/tony-cookie.webp"
+                                    alt="Tony Cookie"
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                            <p className="text-center font-[family-name:var(--font-gamja)] text-2xl mt-2 text-gray-800 tracking-wide">For You</p>
+                        </div>
+                    </div>
                 </div>
 
                 {/* 2. Compact Input Bar (The Compact Bar) */}
                 <div className="sticky top-6 z-50 mb-16 mx-auto max-w-4xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white border-2 border-black p-2 rounded-xl transform hover:-translate-y-1 transition-transform">
+                    <p className="text-center text-sm text-gray-500 mb-2 font-medium">
+                        댓글 남기고 주문하면 <span className="font-bold text-gray-700">[토니쿠키]</span> 증정! 🍪
+                    </p>
                     <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-2">
 
                         {/* Name Input */}
@@ -190,6 +212,7 @@ export default function WaitingSection() {
                         </button>
                     </form>
                     {error && <p className="text-red-500 font-bold text-xs mt-2 text-center">{error}</p>}
+                    {successMessage && <p className="text-blue-600 font-bold text-xs mt-2 text-center">{successMessage}</p>}
                 </div>
 
                 {/* 3. The Controlled Chaos Wall (Data Display) */}
