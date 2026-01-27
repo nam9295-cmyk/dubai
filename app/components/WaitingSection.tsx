@@ -60,9 +60,9 @@ export default function WaitingSection() {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        
+
         // Debugging Start
-        alert("저장 시도 중... 🚀");
+        alert("저장 시도 중.... 🚀");
         console.log("API Key Check:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
 
         setError(null);
