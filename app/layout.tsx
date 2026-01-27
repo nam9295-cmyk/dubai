@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display, Song_Myung } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display, Song_Myung, Gamja_Flower } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 
@@ -25,6 +25,13 @@ const songMyung = Song_Myung({
   display: "swap",
 });
 
+const gamjaFlower = Gamja_Flower({
+  variable: "--font-gamja",
+  weight: ["400"],
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Dubai Stretchy Cookie | Very Good Cookie",
   description: "두바이에서 온 쫀득한 쿠키의 비밀을 경험하세요",
@@ -38,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${songMyung.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${songMyung.variable} ${gamjaFlower.variable} antialiased`}
       >
         <Header />
         {children}
