@@ -154,7 +154,7 @@ export default function WaitingSection() {
                 {/* 2. Compact Input Bar (The Compact Bar) */}
                 <div className="sticky top-6 z-50 mb-16 mx-auto max-w-4xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white border-2 border-black p-2 rounded-xl transform hover:-translate-y-1 transition-transform">
                     <p className="text-center text-sm text-gray-500 mb-2 font-medium">
-                        댓글 남기고 주문하면 <span className="font-bold text-gray-700">[토니쿠키]</span> 증정! 🍪
+                        주문 확인용 <span className="font-bold text-black">휴대폰 뒷번호</span>를 남기면 <span className="font-bold text-black">[토니쿠키]</span> 증정! 🍪
                     </p>
                     <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-2">
 
@@ -175,7 +175,8 @@ export default function WaitingSection() {
                         {/* Phone Input */}
                         <div className="w-full md:w-24 flex-shrink-0">
                             <input
-                                type="text"
+                                type="tel"
+                                inputMode="numeric"
                                 name="phone"
                                 id="input-phone"
                                 value={phoneLast4}
@@ -183,7 +184,8 @@ export default function WaitingSection() {
                                     const val = e.target.value.replace(/[^0-9]/g, "");
                                     if (val.length <= 4) setPhoneLast4(val);
                                 }}
-                                placeholder="1234"
+                                placeholder="뒷번호"
+                                maxLength={4}
                                 className="w-full h-12 px-4 bg-gray-100 border-2 border-transparent focus:border-black focus:bg-white rounded-lg outline-none font-mono font-bold text-black placeholder-gray-400 transition-colors text-center"
                             />
                         </div>
