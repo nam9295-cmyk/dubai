@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-// React Icons
-import { GiChocolateBar, GiWheat, GiPeanut } from "react-icons/gi";
-import { LuFlame } from "react-icons/lu";
+// Removed React Icons imports as we are switching to images
 
 export default function IngredientsSection() {
     const [isVisible, setIsVisible] = useState(false);
@@ -17,7 +14,7 @@ export default function IngredientsSection() {
                     setIsVisible(true);
                 }
             },
-            { threshold: 0.2 }
+            { threshold: 0.1 }
         );
 
         if (sectionRef.current) {
@@ -27,30 +24,21 @@ export default function IngredientsSection() {
         return () => observer.disconnect();
     }, []);
 
-    // Icon style preset
-    const iconClass = "w-12 h-12 text-[#edc5c4]"; // Accent pink or gold tone
-
     const ingredients = [
         {
-            icon: <GiChocolateBar className={iconClass} />,
-            title: "Belgian Origin",
-            description: "벨기에산 프리미엄 초콜릿이 주는 깊고 진한 풍미.",
+            imageSrc: "/pistachio.webp",
+            title: "100% 수제 피스타치오 페이스트",
+            description: "시판 페이스트? 절대 안 씁니다. 최상급 원물을 매장에서 직접 갈아 만든 100% 수제 페이스트. 인위적인 단맛 대신, 피스타치오 본연의 묵직하고 고소한 풍미가 쿠키를 가득 채웁니다.",
         },
         {
-            icon: <GiWheat className={iconClass} />,
-            title: "Fresh Kadayif",
-            description: "중동의 전통 카다이프를 버터에 볶아 만들어낸, 씹을 때마다 터지는 바삭한 식감.",
+            imageSrc: "/kadayif.webp",
+            title: "버터에 볶은 바삭한 카다이프",
+            description: "튀르키예 전통 카다이프면을 버터에 노릇하게 볶아냈습니다. 부드러운 쿠키를 베어 무는 순간, '와삭'하고 부서지며 식감의 클라이맥스를 선사합니다. 쫀득함 속에 숨겨진 반전 식감!",
         },
         {
-            icon: <GiPeanut className={iconClass} />,
-            title: "100% Pistachio",
-            description: "피스타치오 원물 그대로 갈아 만든, 꾸덕하고 고소한 피스타치오 페이스트.",
-        },
-        {
-            // 4번째 카드는 이미지를 사용
-            imageSrc: "/le-cordon-bleu.svg",
-            title: "Le Cordon Bleu",
-            description: "세계적인 프랑스 요리 학교 르 꼬르동 블루 출신의 노하우로 완성한, 섬세하고 깊이 있는 맛의 차이.",
+            imageSrc: "/lecordon.webp",
+            title: "르 꼬르동 블루의 터치",
+            description: "프랑스 요리 학교 출신 쇼콜라티에의 섬세한 배합. 발로나 초콜릿과 독자적인 반죽 비율로, 너무 달지 않으면서도 깊은 여운을 남기는 맛을 완성했습니다. 요리가 된 디저트.",
         },
     ];
 
@@ -58,69 +46,53 @@ export default function IngredientsSection() {
         <section
             ref={sectionRef}
             id="ingredients"
-            className="relative -mt-32 z-50 pb-24 px-4 bg-transparent pointer-events-none"
+            className="relative py-24 px-4 bg-[#fffcf8]"
         >
-            <div className="max-w-7xl mx-auto pointer-events-auto relative">
-
-                {/* Glassmorphism Cards - Slider on Mobile, Grid on Desktop */}
+            <div className="max-w-7xl mx-auto">
+                {/* Scroll container: Slider on Mobile (flex), Grid on Desktop */}
                 <div
-                    className="flex overflow-x-auto snap-x snap-proximity lg:grid lg:grid-cols-4 gap-6 pb-8 lg:pb-0 -mx-4 px-4 lg:mx-0 lg:px-0 touch-pan-x"
-                    style={{
-                        scrollbarWidth: 'none',
-                        msOverflowStyle: 'none',
-                        WebkitOverflowScrolling: 'touch' // iOS smooth scrolling
-                    }}
+                    className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 -mx-4 pb-4 md:pb-0 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0 md:mx-0 [&::-webkit-scrollbar]:hidden"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                    <style jsx>{`
-                        div::-webkit-scrollbar {
-                            display: none;
-                        }
-                    `}</style>
                     {ingredients.map((item, index) => (
                         <div
                             key={index}
                             className={`
-                                flex-shrink-0 w-[85vw] sm:w-[50vw] lg:w-auto snap-center
-                                overflow-hidden relative
-                                bg-black/60 backdrop-blur-md
-                                border border-white/10
-                                rounded-[32px] p-10
-                                shadow-2xl
-                                hover:bg-black/70 hover:-translate-y-2
-                                transition-all duration-500
-                                text-left
-                                cursor-default
+                                flex-shrink-0 w-[85vw] snap-center md:w-auto
+                                relative overflow-visible
+                                bg-white
+                                rounded-3xl
+                                shadow-lg hover:shadow-2xl
+                                hover:-translate-y-2
+                                transition-all duration-500 ease-out
                                 group
+                                border border-[#3e2723]/5
                                 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
                             `}
-                            style={{ transitionDelay: `${index * 100}ms` }}
+                            style={{ transitionDelay: `${index * 150}ms` }}
                         >
-                            {/* Inner Glow Gradient */}
-                            <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+                            {/* Restored Image */}
+                            <img
+                                src={item.imageSrc}
+                                alt={item.title}
+                                className="w-full h-[200px] object-cover rounded-t-2xl"
+                            />
 
-                            {/* Icon Wrapper */}
-                            <div className="mb-6 relative z-10 p-3 bg-white/5 rounded-2xl w-fit backdrop-blur-sm border border-white/5 group-hover:scale-110 transition-transform duration-300">
-                                {item.imageSrc ? (
-                                    <div className="relative h-12 w-auto flex items-center justify-center">
-                                        {/* 이미지 렌더링: width/height 비율 유지 */}
-                                        <img
-                                            src={item.imageSrc}
-                                            alt={item.title + " Mark"}
-                                            className="h-12 w-auto object-contain"
-                                        />
-                                    </div>
-                                ) : (
-                                    item.icon
-                                )}
+                            {/* Content Area */}
+                            <div className="p-8">
+                                <h3 className="text-xl md:text-2xl font-bold text-[#3e2723] mb-2 font-[family-name:var(--font-song-myung)]">
+                                    {item.title}
+                                </h3>
+
+
+
+                                <p className="text-gray-600 text-base leading-relaxed font-sans break-keep">
+                                    {item.description}
+                                </p>
                             </div>
 
-                            <h3 className="text-2xl font-bold text-white mb-4 relative z-10 tracking-wide font-[family-name:var(--font-playfair)]">
-                                {item.title}
-                            </h3>
-
-                            <p className="text-white/80 text-base leading-relaxed relative z-10 font-sans break-keep">
-                                {item.description}
-                            </p>
+                            {/* Decorative Corner Blob */}
+                            <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-[#d16d72]/5 rounded-full blur-xl group-hover:bg-[#d16d72]/10 transition-colors duration-300 pointer-events-none" />
                         </div>
                     ))}
                 </div>

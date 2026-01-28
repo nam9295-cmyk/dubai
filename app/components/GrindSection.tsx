@@ -31,23 +31,9 @@ export default function GrindSection() {
                 <div
                     className={`w-full h-full rounded-[48px] overflow-hidden shadow-2xl transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
                 >
-                    <div className="w-full h-full animate-ken-burns relative">
-                        {/* Desktop Image */}
-                        <Image
-                            src="/story-image.webp"
-                            alt="Our Signature Grind"
-                            fill
-                            className="object-cover hidden md:block"
-                            priority
-                        />
-                        {/* Mobile Image */}
-                        <Image
-                            src="/story-mobile.webp"
-                            alt="Our Signature Grind"
-                            fill
-                            className="object-cover md:hidden"
-                            priority
-                        />
+                    <div className="w-full h-full animate-ken-burns relative bg-gray-100 flex items-center justify-center">
+                        {/* Images removed as requested */}
+                        <span className="text-gray-400">Image Removed</span>
                     </div>
                 </div>
             </div>
