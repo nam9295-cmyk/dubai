@@ -218,7 +218,8 @@ export default function WaitingSection() {
                 </div>
 
                 {/* 3. The Controlled Chaos Wall (Data Display) */}
-                <div className="relative min-h-[600px] p-4 md:p-10 border-4 border-dashed border-gray-300 rounded-[2rem] bg-white/50 overflow-hidden">
+                {/* 3. The Controlled Chaos Wall (Data Display) */}
+                <div className="relative p-4 md:p-10 border-4 border-dashed border-gray-300 rounded-[2rem] bg-white/50 overflow-hidden">
 
                     {/* Background Text Texture */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none overflow-hidden">
@@ -227,57 +228,64 @@ export default function WaitingSection() {
                         </span>
                     </div>
 
-                    <div className="flex flex-wrap justify-center content-start gap-4 md:gap-8 pb-20">
-                        <AnimatePresence initial={false}>
-                            {replies.map((reply, index) => {
-                                // Deterministic Chaos
-                                const style = STYLES[index % STYLES.length];
+                    {/* Scrollable Container */}
+                    <div className="h-[500px] md:h-[600px] overflow-y-auto [&::-webkit-scrollbar]:hidden relative px-2">
+                        {/* List Items Layout: Mobile Stack (Overlapping) / Desktop Wrap */}
+                        <div className="flex flex-col items-center md:flex-row md:flex-wrap md:justify-center md:content-start md:items-start -space-y-6 md:space-y-0 md:gap-8 pt-8 pb-40">
+                            <AnimatePresence initial={false}>
+                                {replies.map((reply, index) => {
+                                    // Deterministic Chaos
+                                    const style = STYLES[index % STYLES.length];
 
-                                return (
-                                    <motion.div
-                                        key={reply.id}
-                                        initial={{ scale: 0, rotate: 10, y: 50, opacity: 0 }}
-                                        animate={{ scale: 1, rotate: style.rotateVal, y: 0, opacity: 1 }}
-                                        transition={{
-                                            type: "spring",
-                                            stiffness: 300,
-                                            damping: 15,
-                                            delay: index < 5 ? index * 0.1 : 0 // Stagger initial load only
-                                        }}
-                                        className={`relative group cursor-default max-w-[200px] md:max-w-[240px]`}
-                                        style={{
-                                            zIndex: index // Newer items on top (or randomized via simple z-index if preferred, but index stacking is safer for readability)
-                                        }}
-                                    >
-                                        <div className={`p-5 shadow-lg ${style.bg} ${style.rotate} ${style.translate} transition-transform duration-300 hover:scale-110 hover:z-50 hover:shadow-2xl hover:rotate-0 border border-black/5 relative`}>
+                                    return (
+                                        <motion.div
+                                            key={reply.id}
+                                            initial={{ scale: 0, rotate: 10, y: 50, opacity: 0 }}
+                                            animate={{ scale: 1, rotate: style.rotateVal, y: 0, opacity: 1 }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 300,
+                                                damping: 15,
+                                                delay: index < 5 ? index * 0.1 : 0 // Stagger initial load only
+                                            }}
+                                            className={`relative group cursor-default max-w-[200px] md:max-w-[240px] w-full`}
+                                            style={{
+                                                zIndex: index // Stack formatting context for overlap
+                                            }}
+                                        >
+                                            <div className={`p-5 shadow-lg ${style.bg} ${style.rotate} ${style.translate} transition-transform duration-300 hover:scale-110 hover:z-50 hover:shadow-2xl hover:rotate-0 border border-black/5 relative`}>
 
-                                            {/* Tape Effect */}
-                                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-8 h-4 bg-white/40 rotate-[2deg] backdrop-blur-sm shadow-sm border border-white/20"></div>
+                                                {/* Tape Effect */}
+                                                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-8 h-4 bg-white/40 rotate-[2deg] backdrop-blur-sm shadow-sm border border-white/20"></div>
 
-                                            <div className={`font-[family-name:var(--font-gamja)] ${style.text} leading-tight`}>
-                                                <p className="text-2xl mb-3 break-words font-medium">
-                                                    {reply.message}
-                                                </p>
-                                                <div className="flex justify-between items-end border-t border-black/10 pt-2 mt-2">
-                                                    <span className="font-bold text-base opacity-80">@{reply.name}</span>
-                                                    <span className="text-[10px] font-sans opacity-40 font-bold uppercase tracking-wider">
-                                                        {reply.createdAt?.toDate ? formatDistanceToNow(reply.createdAt.toDate(), { addSuffix: true, locale: ko }) : 'NOW'}
-                                                    </span>
+                                                <div className={`font-[family-name:var(--font-gamja)] ${style.text} leading-tight`}>
+                                                    <p className="text-2xl mb-3 break-words font-medium">
+                                                        {reply.message}
+                                                    </p>
+                                                    <div className="flex justify-between items-end border-t border-black/10 pt-2 mt-2">
+                                                        <span className="font-bold text-base opacity-80">@{reply.name}</span>
+                                                        <span className="text-[10px] font-sans opacity-40 font-bold uppercase tracking-wider">
+                                                            {reply.createdAt?.toDate ? formatDistanceToNow(reply.createdAt.toDate(), { addSuffix: true, locale: ko }) : 'NOW'}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </motion.div>
-                                );
-                            })}
-                        </AnimatePresence>
+                                        </motion.div>
+                                    );
+                                })}
+                            </AnimatePresence>
 
-                        {replies.length === 0 && (
-                            <div className="w-full text-center py-20 opacity-30">
-                                <h3 className="text-4xl font-black text-gray-400">BE THE FIRST</h3>
-                                <p className="text-xl">첫 낙서를 남겨주세요!</p>
-                            </div>
-                        )}
+                            {replies.length === 0 && !loading && (
+                                <div className="w-full text-center py-20 opacity-30">
+                                    <h3 className="text-4xl font-black text-gray-400">BE THE FIRST</h3>
+                                    <p className="text-xl">첫 낙서를 남겨주세요!</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
+
+                    {/* Gradient Fade-Out Mask */}
+                    <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#F5F5F3] via-[#F5F5F3]/80 to-transparent pointer-events-none z-50" />
                 </div>
 
             </div>
