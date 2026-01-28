@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 
 export default function StorySection() {
     const [isVisible, setIsVisible] = useState(false);
@@ -14,7 +13,7 @@ export default function StorySection() {
                     setIsVisible(true);
                 }
             },
-            { threshold: 0.15 }
+            { threshold: 0.1 }
         );
 
         if (sectionRef.current) {
@@ -25,90 +24,113 @@ export default function StorySection() {
     }, []);
 
     return (
-        <section ref={sectionRef} id="story" className="py-24 px-4 bg-[#fffcf8] overflow-hidden">
-            <div className="max-w-7xl mx-auto space-y-32">
+        <section ref={sectionRef} id="story" className="py-24 px-4 bg-[#fffcf8] overflow-hidden relative min-h-screen flex items-center">
+            <div className="max-w-7xl mx-auto w-full relative">
 
-                {/* Block A: The Motivation */}
-                <div className="grid md:grid-cols-12 gap-y-12 md:gap-x-16 lg:gap-x-24 items-center text-left">
-                    {/* Visual - Left (5 columns approx 41%) */}
-                    <div className={`col-span-12 md:col-span-5 relative aspect-[4/5] md:aspect-square order-1 transition-all duration-700 ease-out will-change-transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                        <div className="w-full h-full rounded-[2rem] overflow-hidden shadow-2xl relative rotate-1 hover:rotate-0 transition-transform duration-700">
-                            <Image
-                                src="/story-family.webp"
-                                alt="Mother and child sharing a moment"
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, 40vw"
-                            />
-                            {/* Sentiment Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60" />
+                {/* Header Title */}
+                <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <span className="text-[#d16d72] font-semibold tracking-widest text-sm uppercase block mb-3 font-[family-name:var(--font-song-myung)]">Our History</span>
+                    <h2 className="text-4xl md:text-5xl font-[family-name:var(--font-song-myung)] text-[#3e2723]">
+                        베리굿이 걸어온 길
+                    </h2>
+                </div>
+
+                {/* Timeline Container */}
+                <div className="relative">
+                    {/* Vertical Line - Absolute Center on Desktop, Left on Mobile */}
+                    <div className={`absolute left-8 md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#3e2723]/0 via-[#3e2723]/30 to-[#3e2723]/0 transform -translate-x-1/2 transition-all duration-1000 delay-300 origin-top ${isVisible ? 'scale-y-100' : 'scale-y-0'}`} />
+
+                    {/* [Season 1] 2024: Text (Left) - Image (Right) */}
+                    <div className={`relative mb-24 md:mb-32 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center w-full transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+
+                        {/* Dot - Centered on Desktop, Left on Mobile */}
+                        <div className="absolute left-8 md:left-1/2 top-0 md:top-1/2 w-4 h-4 rounded-full bg-[#3e2723] border-4 border-[#fffcf8] transform -translate-x-1/2 md:-translate-y-1/2 z-10 shadow-md" />
+
+                        {/* Content: Text (Desktop Left / Mobile 2nd) */}
+                        <div className="pl-20 md:pl-0 md:text-right w-full order-2 md:order-1">
+                            <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl border border-[#3e2723]/5 shadow-sm hover:shadow-md transition-shadow duration-300">
+                                <span className="inline-block px-3 py-1 rounded-full bg-[#3e2723]/10 text-[#3e2723] text-xs font-bold tracking-wider mb-4 font-[family-name:var(--font-song-myung)]">
+                                    2024 Heritage
+                                </span>
+                                <h3 className="text-2xl md:text-3xl font-[family-name:var(--font-song-myung)] text-[#3e2723] mb-4 leading-tight">
+                                    [Season 1]<br />
+                                    2024년 여름, 대한민국 첫 번째<br />
+                                    라이브 임팩트
+                                </h3>
+                                <div className="space-y-4 text-gray-700 leading-relaxed font-sans text-base md:text-lg">
+                                    <p>
+                                        모두가 완제품을 팔 때, 우리는 국내 최초로 팝업 매장에서 <strong className="text-[#3e2723] bg-[#3e2723]/5 px-1 rounded">'라이브'</strong>로 두바이 초콜릿을 만들었습니다.
+                                    </p>
+                                    <p>
+                                        눈앞에서 펼쳐지는 꾸덕한 피스타치오와 바삭한 카다이프의 향연.
+                                    </p>
+                                    <p>
+                                        수많은 분들이 오픈런으로 증명해주신 그 뜨거운 사랑이 베리굿의 시작이었습니다.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Visual: Image (Desktop Right / Mobile 1st) */}
+                        <div className="pl-20 md:pl-0 w-full order-1 md:order-2">
+                            <div className="relative aspect-[4/3] md:aspect-[16/9] w-full overflow-hidden rounded-xl shadow-lg group">
+                                <img
+                                    src="/2024_dubai.webp"
+                                    alt="2024 Dubai Chocolate Story"
+                                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                                />
+                            </div>
                         </div>
                     </div>
 
-                    {/* Text - Right (7 columns) */}
-                    <div className={`col-span-12 md:col-span-7 md:pl-8 order-2 space-y-8 transition-all duration-700 delay-200 ease-out will-change-transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                        <div>
-                            <span className="text-gray-400 font-medium tracking-widest text-xs uppercase block mb-3">The Motivation</span>
-                            <h3 className="text-4xl md:text-5xl font-[family-name:var(--font-song-myung)] font-serif text-[#3e2723] leading-tight tracking-tight mb-6">
-                                유행을 쫓지 않았습니다.<br />
-                                <span className="block mt-2">사랑을 쫓았을 뿐.</span>
-                            </h3>
+                    {/* [Season 2] 2026: Image (Left) - Text (Right) */}
+                    <div className={`relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center w-full transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+
+                        {/* Dot - Centered on Desktop, Left on Mobile */}
+                        <div className="absolute left-8 md:left-1/2 top-0 md:top-1/2 w-4 h-4 rounded-full bg-[#d16d72] border-4 border-[#fffcf8] transform -translate-x-1/2 md:-translate-y-1/2 z-10 shadow-md animate-pulse" />
+
+                        {/* Visual: Image (Desktop Left / Mobile 1st) */}
+                        <div className="pl-20 md:pl-0 w-full order-1 md:order-1">
+                            <div className="relative aspect-[4/3] md:aspect-[16/9] w-full overflow-hidden rounded-xl shadow-lg group">
+                                <img
+                                    src="/2026_dubai.webp"
+                                    alt="2026 Sticky Cookie Story"
+                                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                                />
+                            </div>
                         </div>
-                        <div className="space-y-6 text-gray-800 text-lg leading-loose tracking-tight font-sans">
-                            <p>
-                                2025년, 3개월을 앓아누우며 다짐했습니다. 다시는 유행에 흔들리지 않겠다고.
-                            </p>
-                            <p>
-                                하지만 {"'"}엄마...{"'"} 하고 부르는 윤이의 귓속말 한마디에 다시 앞치마를 맸습니다.
-                            </p>
-                            <p>
-                                가장 사랑하는 내 아이에게 먹일 것이기에, <strong className="text-[#d16d72] font-bold">베리굿은 타협할 수 없었습니다.</strong>
-                            </p>
+
+                        {/* Content: Text (Desktop Right / Mobile 2nd) */}
+                        <div className="pl-20 md:pl-0 w-full text-left order-2 md:order-2">
+                            <div className="bg-gradient-to-br from-white/80 to-[#d16d72]/5 backdrop-blur-sm p-8 rounded-2xl border border-[#d16d72]/10 shadow-sm hover:shadow-md transition-shadow duration-300 relative overflow-hidden">
+                                {/* Decorative blurry blob */}
+                                <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#d16d72]/10 rounded-full blur-2xl"></div>
+
+                                <span className="relative inline-block px-3 py-1 rounded-full bg-[#d16d72] text-white text-xs font-bold tracking-wider mb-4 shadow-sm font-[family-name:var(--font-song-myung)]">
+                                    2026 Evolution
+                                </span>
+                                <h3 className="relative text-2xl md:text-3xl font-[family-name:var(--font-song-myung)] text-[#8c3639] mb-4 leading-tight">
+                                    [Season 2]<br />
+                                    2026년, '두바이 쫀득 쿠키(두쫀쿠)'의 탄생
+                                </h3>
+                                <div className="time-line-text space-y-4 text-gray-700 leading-relaxed font-sans text-base md:text-lg relative z-10">
+                                    <p>
+                                        그 압도적인 맛을 더 색다르게, 더 쫀득하게 즐길 수는 없을까?
+                                    </p>
+                                    <p>
+                                        초콜릿의 황홀함에 식감의 재미를 더하기 위한 2년간의 연구.
+                                    </p>
+                                    <p>
+                                        마침내 초콜릿의 풍미는 가두고, 쿠키의 쫀득함 속에 바삭한 카다이프를 완벽하게 만들었습니다.
+                                    </p>
+                                    <p className="font-medium text-[#8c3639]">
+                                        당신이 알던 두바이 초콜릿, 그 이상의 경험. <strong className="text-[#d16d72] underline decoration-[#d16d72]/30 decoration-4 underline-offset-2">'두쫀쿠'</strong>를 시작합니다.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                {/* Block B: The Quality */}
-                <div className="grid md:grid-cols-12 gap-y-12 md:gap-x-16 lg:gap-x-24 items-center text-left">
-                    {/* Text - Left (7 columns) */}
-                    <div className={`col-span-12 md:col-span-7 md:pr-8 order-2 md:order-1 space-y-8 transition-all duration-700 delay-300 ease-out will-change-transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                        <div>
-                            <span className="text-gray-400 font-medium tracking-widest text-xs uppercase block mb-3">The Quality</span>
-                            <h3 className="text-4xl md:text-5xl font-[family-name:var(--font-song-myung)] font-serif text-[#3e2723] leading-tight tracking-tight mb-6">
-                                시판 페이스트?<br />
-                                <span className="block mt-2">절대 안 씁니다.</span>
-                            </h3>
-                        </div>
-                        <div className="space-y-6 text-gray-800 text-lg leading-loose tracking-tight font-sans">
-                            <p>
-                                두바이 초콜릿 속을 직접 만들어 본 사람은 압니다.
-                                시판 제품에는 갓 볶은 피스타치오의 그 고소한 향기가 없다는 것을요.
-                            </p>
-                            <p>
-                                피스타치오를 수입하고 껍질을 까느라 밤을 새워도 괜찮습니다.
-                            </p>
-                            <p>
-                                누가 모르더라도, <strong className="text-[#d16d72] font-bold">만드는 제가 아니까요.</strong> 이게 진짜 {"'"}베리굿{"'"}이니까요.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Visual - Right (5 columns) */}
-                    <div className={`col-span-12 md:col-span-5 relative aspect-[4/5] md:aspect-square order-1 md:order-2 transition-all duration-700 delay-100 ease-out will-change-transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                        <div className="w-full h-full rounded-[2rem] overflow-hidden shadow-2xl relative -rotate-1 hover:rotate-0 transition-transform duration-700">
-                            <Image
-                                src="/story-ingredients.webp"
-                                alt="Premium Pistachio and Chocolate Ingredients"
-                                fill
-                                className="object-cover scale-105 hover:scale-100 transition-transform duration-1000"
-                                sizes="(max-width: 768px) 100vw, 40vw"
-                            />
-                        </div>
-                        {/* Decorative Circle */}
-                        <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-[#edc5c4]/20 rounded-full blur-3xl -z-10" />
-                    </div>
-                </div>
-
             </div>
         </section>
     );
