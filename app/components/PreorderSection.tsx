@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 
 // 2026년 2월 3일 오전 10:00 (KST 기준 가정)
-const TARGET_DATE = new Date("2026-02-03T10:00:00");
+const TARGET_DATE = new Date("2026-02-10T10:00:00");
 
 export default function PreorderSection() {
     const [isVisible, setIsVisible] = useState(false);
@@ -64,7 +64,7 @@ export default function PreorderSection() {
                 {/* Header Text */}
                 <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                     <h2 className="text-4xl md:text-6xl font-serif text-[#3E2723] mb-6 font-[family-name:var(--font-song-myung)] tracking-tight">
-                        2월 3일, 주문 시작
+                        2월 10일, 주문 시작
                     </h2>
                     <p className="text-[#5d4037] text-lg md:text-xl font-sans leading-relaxed">
                         현재 주문 폭주를 대비해 마지막 물량을 확보 중입니다.<br className="hidden md:block" />
@@ -122,7 +122,7 @@ export default function PreorderSection() {
                         disabled
                         className="w-full md:w-auto px-12 py-5 bg-gray-200 text-gray-500 text-lg md:text-xl font-bold rounded-full cursor-not-allowed transition-all shadow-inner"
                     >
-                        2026. 02. 03 (월) 10:00 OPEN
+                        2026. 02. 10 (화) 10:00 OPEN
                     </button>
 
                 </div>
